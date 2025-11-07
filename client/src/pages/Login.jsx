@@ -21,11 +21,13 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            const { data } = await api.post(`/api/users/${state}`, formData)
+            console.log('🔍 API URL:', api.defaults.baseURL + `/users/${state}`)
+            const { data } = await api.post(`/users/${state}`, formData)
             dispatch(login(data))
             localStorage.setItem('token', data.token)
             toast.success(data.message)
         } catch (error) {
+            console.error('❌ Error during login:', error)
             toast(error?.response?.data?.message || error.message)
         }
 
@@ -66,4 +68,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Login;
