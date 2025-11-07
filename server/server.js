@@ -9,18 +9,29 @@ import aiRouter from "./routes/aiRoutes.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Database connection
-await connectDB()
+app.use(express.json());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://your-netlify-site.netlify.app"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
-app.use(express.json())
-app.use(cors())
+app.get("/", (req, res) => res.send("✅ Server is live and working!"));
+app.use("/api/users", userRouter);
+app.use("/api/resumes", resumeRouter);
+app.use("/api/ai", aiRouter);
 
-app.get('/', (req, res)=> res.send("Server is live..."))
-app.use('/api/users', userRouter)
-app.use('/api/resumes', resumeRouter)
-app.use('/api/ai', aiRouter)
+// ✅ FIX: Wrap database + server start inside an async function
+const startServer = async () => {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("❌ Server failed to start:", error.message);
+  }
+};
 
-app.listen(PORT, ()=>{
-    console.log(`Server is running on port ${PORT}`);
-    
-});
+startServer();
