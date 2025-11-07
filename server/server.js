@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://serene-cobbler-a453df.netlify.app/"],
+    origin: ["http://localhost:5173", "https://serene-cobbler-a453df.netlify.app"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
