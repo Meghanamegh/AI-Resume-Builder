@@ -4,12 +4,10 @@ import api from '../configs/api'
 import { useDispatch } from 'react-redux'
 import { login } from '../app/features/authSlice'
 import toast from 'react-hot-toast'
-import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
 
      const dispatch = useDispatch()
-     const navigate = useNavigate()
     const query = new URLSearchParams(window.location.search)
     const urlState = query.get('state')
     const [state, setState] = React.useState(urlState || "login")
@@ -20,13 +18,6 @@ const Login = () => {
         password: ''
     })
 
-      // ✅ Auto redirect if already logged in
-    // eslint-disable-next-line no-undef
-    useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (token) navigate('/app')
-  }, [navigate])
-
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -36,10 +27,6 @@ const Login = () => {
             dispatch(login(data))
             localStorage.setItem('token', data.token)
             toast.success(data.message)
-            // ✅ Delay navigation slightly to ensure Redux + toast update first
-        setTimeout(() => {
-          navigate('/app')
-        }, 500)
 
         } catch (error) {
             console.error('❌ Error during login:', error)
