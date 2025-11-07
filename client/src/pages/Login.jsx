@@ -20,6 +20,14 @@ const Login = () => {
         password: ''
     })
 
+      // ✅ Auto redirect if already logged in
+    // eslint-disable-next-line no-undef
+    useEffect(() => {
+    const token = localStorage.getItem('token')
+    if (token) navigate('/app')
+  }, [navigate])
+
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -28,7 +36,10 @@ const Login = () => {
             dispatch(login(data))
             localStorage.setItem('token', data.token)
             toast.success(data.message)
-            navigate('/app')
+            // ✅ Delay navigation slightly to ensure Redux + toast update first
+        setTimeout(() => {
+          navigate('/app')
+        }, 500)
 
         } catch (error) {
             console.error('❌ Error during login:', error)
