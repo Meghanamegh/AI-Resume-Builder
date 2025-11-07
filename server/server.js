@@ -12,11 +12,16 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://serene-cobbler-a453df.netlify.app"],
+    origin: [
+      "http://localhost:5173",
+      "https://serene-cobbler-a453df.netlify.app"
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
+app.options("*", cors());
 app.get("/", (req, res) => res.send("✅ Server is live and working!"));
 app.use("/api/users", userRouter);
 app.use("/api/resumes", resumeRouter);
